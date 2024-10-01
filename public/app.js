@@ -7,14 +7,17 @@ const state = {
     { vegetable: "🥔potato", amount: 25, color: "brown" },
     { vegetable: "🍅tomato", amount: 8 },
   ],
-  addVegetable: function (vegetable, amount) {
-    this.shop.push({ vegetable, amount });
+  order: [],
+  addVegetable: function (vegetable, amount, color) {
+    this.shop.push({ vegetable, amount, color });
   },
 };
 
 //render = visa upp nya "GUI"
 const renderShop = () => {
   //tömma shop-div först!
+  const shopDiv = document.querySelector(".shop");
+  shopDiv.innerHTML = "";
   for (const v of state.shop) {
     //skapa ny divtagg
     const vegetable = document.createElement("div");
@@ -23,8 +26,17 @@ const renderShop = () => {
       v.color === undefined ? "" : "," + v.color
     }`;
     //lägger till taggen i domen
-    document.querySelector(".shop").appendChild(vegetable);
+    shopDiv.appendChild(vegetable);
   }
 };
-state.addVegetable("cucumber", 25);
 renderShop();
+document.querySelector(".add-vegetable").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  state.addVegetable(
+    document.querySelector("#vegetable").value,
+    document.querySelector("#amount").value,
+    document.querySelector("#color").value
+  );
+  renderShop();
+});
